@@ -154,10 +154,12 @@ func (p *Processor) verifyCastMessage(msg *model.ConsensusCastMessage, preBH *ty
 		// trigger the cached messages from other members that come ahead of the proposal message
 		p.castVerifyCh <- bh
 		ok = true
+		castor := common.BytesToAddress(bh.Castor).AddrPrefixString()
 		log.ELKLogger.WithFields(logrus.Fields{
 			"verifyHeight": bh.Height,
 			"now":          time.TSInstance.Now().UTC(),
 			"logType":      "verifyLog",
+			"castor":       castor,
 			"version":      common.GtasVersion,
 		}).Info("verify")
 	} else {
