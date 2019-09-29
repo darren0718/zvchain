@@ -339,6 +339,14 @@ func (p *Processor) doVerify(cvm *model.ConsensusVerifyMessage, vctx *VerifyCont
 	if ret == pieceThreshold {
 		p.reserveBlock(vctx, slot)
 		vctx.increaseAggrNum()
+		castor := common.BytesToAddress(bh.Castor).AddrPrefixString()
+		log.ELKLogger.WithFields(logrus.Fields{
+			"verifyHeight": bh.Height,
+			"now":          time.TSInstance.Now().UTC(),
+			"logType":      "verifyfromverifyLog",
+			"version":      common.GtasVersion,
+			"castor":       castor,
+		}).Info("verifyfromverify")
 	}
 	return
 }
