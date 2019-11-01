@@ -2,6 +2,7 @@ package logical
 
 import (
 	"fmt"
+	"github.com/darren0718/zvchain/network"
 	"strings"
 	"time"
 
@@ -94,6 +95,17 @@ func (rh *RewardHandler) OnMessageCastRewardSign(msg *model.CastRewardTransSignM
 	// Add the reward transaction to pool if the signature is accepted and the verifyGroup signature is recovered
 	if accept && recover && slot.statusTransform(slRewardSignReq, slRewardSent) {
 		_, err = rh.processor.AddTransaction(slot.rewardTrans)
+		// broad the reward trans to proposal group immediately
+		txs := make([]*types.RawTransaction, 0)
+		txs = append(txs, slot.rewardTrans.RawTransaction)
+		body, e := types.MarshalTransactions(txs)
+		if e != nil {
+			stdLogger.Errorf("marshal transaction error:%v", e)
+			return err
+		}
+		message := network.Message{Code: network.TxSyncResponse, Body: body}
+		network.GetNetInstance().SpreadToGroup(network.FullNodeVirtualGroupID, nil, message, nil)
+
 		send = true
 		err = fmt.Errorf("add rewardTrans to txPool, txHash=%v，sign=%v, pk=%v, tx=%+v, err=%v", slot.rewardTrans.Hash, common.ToHex(slot.rewardTrans.Sign), group.header.gpk.GetHexString(), slot.rewardTrans.RawTransaction, err)
 		return nil
