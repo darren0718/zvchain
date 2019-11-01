@@ -18,13 +18,13 @@ package main
 import (
 	"runtime/debug"
 
-	"github.com/zvchain/zvchain/cmd/gzv/cli"
+	"github.com/darren0718/zvchain/cmd/gzv/cli"
 )
 
 func main() {
 	debug.SetTraceback("all")
 	gzv := cli.NewGzv()
-	go func(){
+	go func() {
 		<-gzv.InitCha
 
 	}()

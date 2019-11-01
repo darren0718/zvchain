@@ -18,8 +18,8 @@ package tvm
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/zvchain/zvchain/common"
-	"github.com/zvchain/zvchain/params"
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/params"
 	"testing"
 )
 

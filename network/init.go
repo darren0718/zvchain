@@ -24,11 +24,11 @@ import (
 	"net"
 	"time"
 
+	"github.com/darren0718/zvchain/log"
 	"github.com/sirupsen/logrus"
-	"github.com/zvchain/zvchain/log"
 
-	"github.com/zvchain/zvchain/common"
-	"github.com/zvchain/zvchain/middleware/statistics"
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/middleware/statistics"
 )
 
 // NetworkConfig is the network configuration

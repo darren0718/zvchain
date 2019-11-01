@@ -16,7 +16,7 @@
 package notify
 
 import (
-	"github.com/zvchain/zvchain/middleware/types"
+	"github.com/darren0718/zvchain/middleware/types"
 	"reflect"
 	"runtime/debug"
 	"sync"
@@ -39,7 +39,7 @@ func (d *DummyMessage) GetData() interface{} {
 	return struct{}{}
 }
 
-type Handler func(message Message)error
+type Handler func(message Message) error
 
 // Topic as a message subscription
 type Topic struct {

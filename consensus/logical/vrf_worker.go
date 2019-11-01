@@ -22,10 +22,10 @@ import (
 	"math/big"
 	"sync/atomic"
 
-	"github.com/zvchain/zvchain/consensus/base"
-	"github.com/zvchain/zvchain/consensus/model"
-	"github.com/zvchain/zvchain/middleware/time"
-	"github.com/zvchain/zvchain/middleware/types"
+	"github.com/darren0718/zvchain/consensus/base"
+	"github.com/darren0718/zvchain/consensus/model"
+	"github.com/darren0718/zvchain/middleware/time"
+	"github.com/darren0718/zvchain/middleware/types"
 )
 
 // defines the status of vrfWorker

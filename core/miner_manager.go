@@ -18,12 +18,12 @@ package core
 import (
 	"bytes"
 	"fmt"
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/log"
+	"github.com/darren0718/zvchain/middleware/types"
+	"github.com/darren0718/zvchain/storage/tasdb"
 	lru "github.com/hashicorp/golang-lru"
 	"github.com/vmihailenco/msgpack"
-	"github.com/zvchain/zvchain/common"
-	"github.com/zvchain/zvchain/log"
-	"github.com/zvchain/zvchain/middleware/types"
-	"github.com/zvchain/zvchain/storage/tasdb"
 	"math"
 	"runtime"
 	"sync"
@@ -63,16 +63,19 @@ func initMinerManager(storeDB tasdb.Database) {
 		proposalMinerData: common.MustNewLRUCache(10000),
 		store:             initCacheStore(storeDB),
 	}
-	MinerManagerImpl.store.loadMiners(types.MinerTypeProposal, MinerManagerImpl.proposalMinerData)
-	MinerManagerImpl.store.loadMiners(types.MinerTypeVerify, MinerManagerImpl.verifyMinerData)
 
-	ticker := time.NewTicker(300 * time.Second)
-	go func() {
-		for range ticker.C {
-			MinerManagerImpl.store.storeMiners(types.MinerTypeProposal, MinerManagerImpl.proposalMinerData)
-			MinerManagerImpl.store.storeMiners(types.MinerTypeVerify, MinerManagerImpl.verifyMinerData)
-		}
-	}()
+	if storeDB != nil {
+		MinerManagerImpl.store.loadMiners(types.MinerTypeProposal, MinerManagerImpl.proposalMinerData)
+		MinerManagerImpl.store.loadMiners(types.MinerTypeVerify, MinerManagerImpl.verifyMinerData)
+
+		ticker := time.NewTicker(300 * time.Second)
+		go func() {
+			for range ticker.C {
+				MinerManagerImpl.store.storeMiners(types.MinerTypeProposal, MinerManagerImpl.proposalMinerData)
+				MinerManagerImpl.store.storeMiners(types.MinerTypeVerify, MinerManagerImpl.verifyMinerData)
+			}
+		}()
+	}
 }
 
 // GuardNodesCheck check guard nodes is expired

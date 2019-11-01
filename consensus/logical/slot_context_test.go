@@ -16,7 +16,7 @@
 package logical
 
 import (
-	"github.com/zvchain/zvchain/common"
+	"github.com/darren0718/zvchain/common"
 	"gopkg.in/fatih/set.v0"
 	"math/rand"
 	"sync"

@@ -18,7 +18,7 @@ package cli
 import (
 	"fmt"
 
-	"github.com/zvchain/zvchain/common"
+	"github.com/darren0718/zvchain/common"
 )
 
 func (api *RpcDevImpl) ScriptTransferTx(privateKey string, from string, to string, amount uint64, nonce uint64, txType int, gasPrice uint64) (string, error) {

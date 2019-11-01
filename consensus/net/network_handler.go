@@ -19,10 +19,10 @@ import (
 	"fmt"
 	"runtime/debug"
 
+	"github.com/darren0718/zvchain/log"
 	"github.com/sirupsen/logrus"
-	"github.com/zvchain/zvchain/log"
 
-	"github.com/zvchain/zvchain/network"
+	"github.com/darren0718/zvchain/network"
 )
 
 var logger *logrus.Logger

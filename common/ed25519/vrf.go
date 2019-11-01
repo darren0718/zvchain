@@ -22,7 +22,7 @@ import (
 	"errors"
 	"math/big"
 
-	"github.com/zvchain/zvchain/common/ed25519/edwards25519"
+	"github.com/darren0718/zvchain/common/ed25519/edwards25519"
 )
 
 const (

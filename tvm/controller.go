@@ -20,8 +20,8 @@ import (
 	"encoding/binary"
 	"encoding/json"
 	"fmt"
-	"github.com/zvchain/zvchain/common"
-	"github.com/zvchain/zvchain/middleware/types"
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/middleware/types"
 	"math/big"
 )
 
@@ -155,13 +155,13 @@ func BytesToBigInt(bs []byte) *big.Int {
 	if len(bs) < 1 {
 		return nil
 	}
-	if bs[0] & 0x80 != 0 {
+	if bs[0]&0x80 != 0 {
 		isNeg = true
 		tmp := big.NewInt(0)
 		tmp.SetBytes(bs)
 		tmp.Sub(tmp, big.NewInt(1))
 		data = tmp.Bytes()
-		for i:=0; i<len(data);i++ {
+		for i := 0; i < len(data); i++ {
 			data[i] = ^data[i]
 		}
 	} else {
@@ -210,7 +210,7 @@ func VmDataConvert(value []byte) interface{} {
 		return []interface{}{}
 	} else if value[0] == 'b' {
 		if len(value) == 2 {
-			if value[1] != '0'{
+			if value[1] != '0' {
 				return true
 			} else {
 				return false
@@ -218,7 +218,7 @@ func VmDataConvert(value []byte) interface{} {
 		} else {
 			return nil
 		}
-	} else if value[0] == 'n'{
+	} else if value[0] == 'n' {
 		return nil
 	} else if value[0] == 'y' {
 		return value[1:]

@@ -15,7 +15,7 @@
 package group
 
 import (
-	"github.com/zvchain/zvchain/middleware/types"
+	"github.com/darren0718/zvchain/middleware/types"
 	"testing"
 )
 
@@ -25,19 +25,18 @@ func TestRevert(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		ui := uint64(i)
 		gl := newGroup4Test(ui)
-		queue = append(queue,gl)
+		queue = append(queue, gl)
 	}
 
 	re := revert(queue)
 	for ii, v := range re {
-		if uint64(ii) != 9 - v.Header().WorkHeight() {
+		if uint64(ii) != 9-v.Header().WorkHeight() {
 			t.Error("revert failed")
 		}
 	}
 }
 
-
 func newGroup4Test(height uint64) *group {
-	header := &groupHeader{WorkHeightD:height}
-	return &group{HeaderD:header}
+	header := &groupHeader{WorkHeightD: height}
+	return &group{HeaderD: header}
 }

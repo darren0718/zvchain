@@ -18,32 +18,34 @@ package core
 import (
 	"errors"
 	"fmt"
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/log"
 	"github.com/sirupsen/logrus"
-	"github.com/zvchain/zvchain/log"
 	"math"
 	"math/rand"
 	"sync"
 
+	"github.com/darren0718/zvchain/middleware/notify"
+	tas_middleware_pb "github.com/darren0718/zvchain/middleware/pb"
+	"github.com/darren0718/zvchain/middleware/ticker"
+	zvtime "github.com/darren0718/zvchain/middleware/time"
+	"github.com/darren0718/zvchain/middleware/types"
+	"github.com/darren0718/zvchain/network"
 	"github.com/gogo/protobuf/proto"
-	"github.com/zvchain/zvchain/middleware/notify"
-	tas_middleware_pb "github.com/zvchain/zvchain/middleware/pb"
-	"github.com/zvchain/zvchain/middleware/ticker"
-	zvtime "github.com/zvchain/zvchain/middleware/time"
-	"github.com/zvchain/zvchain/middleware/types"
-	"github.com/zvchain/zvchain/network"
 )
 
 const (
-	sendLocalTopInterval       = 3   // Interval of sending local top block to neighbor
-	syncNeightborsInterval     = 3   // Interval of requesting synchronize block from neighbor
-	syncNeightborTimeout       = 5   // Timeout of requesting synchronize block from neighbor
-	blockSyncCandidatePoolSize = 100 // Size of candidate peer pool for block synchronize
+	sendLocalTopInterval        = 6   // Interval of sending local top block to neighbor
+	syncNeightborsInterval      = 3   // Interval of requesting synchronize block from neighbor
+	defaultSyncNeightborTimeout = 5   // Timeout of requesting synchronize block from neighbor
+	blockSyncCandidatePoolSize  = 100 // Size of candidate peer pool for block synchronize
 )
 
 const (
-	tickerSendLocalTop = "send_local_top"
-	tickerSyncNeighbor = "sync_neightbor"
-	tickerSyncTimeout  = "sync_timeout"
+	tickerSendLocalTop         = "send_local_top"
+	tickerSyncNeighbor         = "sync_neightbor"
+	tickerSyncTimeout          = "sync_timeout"
+	configSyncNeightborTimeout = "block_sync_timeout"
 )
 
 var (
@@ -66,8 +68,9 @@ type blockSyncer struct {
 
 	ticker *ticker.GlobalTicker
 
-	lock   sync.RWMutex
-	logger *logrus.Logger
+	lock                 sync.RWMutex
+	logger               *logrus.Logger
+	syncNeightborTimeout uint32
 }
 
 type topBlockInfo struct {
@@ -84,9 +87,10 @@ func newTopBlockInfo(topBH *types.BlockHeader) *topBlockInfo {
 
 func newBlockSyncer(chain *FullBlockChain) *blockSyncer {
 	return &blockSyncer{
-		candidatePool: make(map[string]*types.CandidateBlockHeader),
-		chain:         chain,
-		syncingPeers:  make(map[string]uint64),
+		candidatePool:        make(map[string]*types.CandidateBlockHeader),
+		chain:                chain,
+		syncingPeers:         make(map[string]uint64),
+		syncNeightborTimeout: uint32(common.GlobalConf.GetInt(configSec, configSyncNeightborTimeout, defaultSyncNeightborTimeout)),
 	}
 }
 
@@ -105,6 +109,8 @@ func InitBlockSyncer(chain *FullBlockChain) {
 	notify.BUS.Subscribe(notify.BlockInfoNotify, blockSync.topBlockInfoNotifyHandler)
 	notify.BUS.Subscribe(notify.BlockReq, blockSync.blockReqHandler)
 	notify.BUS.Subscribe(notify.BlockResponse, blockSync.blockResponseMsgHandler)
+
+	blockSync.logger.Debugf("init block syncer,block sync timeout:%v", blockSync.syncNeightborTimeout)
 
 }
 
@@ -382,7 +388,7 @@ func (bs *blockSyncer) requestBlock(ci *SyncCandidateInfo) {
 
 	bs.chain.ticker.RegisterOneTimeRoutine(bs.syncTimeoutRoutineName(id), func() bool {
 		return bs.syncComplete(id, true)
-	}, syncNeightborTimeout)
+	}, bs.syncNeightborTimeout)
 }
 
 func (bs *blockSyncer) notifyLocalTopBlockRoutine() bool {
@@ -559,7 +565,7 @@ func (bs *blockSyncer) blockReqHandler(msg notify.Message) error {
 	}
 
 	bs.logger.Debugf("Rcv block request:reqHeight:%d, reqSize:%v, localHeight:%d", br.ReqHeight, br.ReqSize, localHeight)
-	blocks := bs.chain.BatchGetBlocksAfterHeight(br.ReqHeight, int(br.ReqSize))
+	blocks := bs.chain.BatchGetBlocksAfterHeight(br.ReqHeight, 2)
 	responseBlocks(m.Source(), blocks)
 	return nil
 }

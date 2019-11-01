@@ -19,17 +19,17 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/zvchain/zvchain/middleware/types"
+	"github.com/darren0718/zvchain/middleware/types"
 	"io/ioutil"
 	"os"
 	"regexp"
 	"strconv"
 	"strings"
 
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/tvm"
 	"github.com/howeyc/gopass"
 	"github.com/peterh/liner"
-	"github.com/zvchain/zvchain/common"
-	"github.com/zvchain/zvchain/tvm"
 )
 
 type baseCmd struct {
@@ -192,7 +192,7 @@ type queryFundGuardCmd struct {
 	addr string
 }
 
-func geneQueryFundGuardCmd()*queryFundGuardCmd{
+func geneQueryFundGuardCmd() *queryFundGuardCmd {
 	c := &queryFundGuardCmd{
 		baseCmd: *genBaseCmd("queryguardmode", "view fund guard mode by address"),
 	}
@@ -1223,7 +1223,7 @@ func loop(acm accountOp, chainOp chainOp) {
 			}
 		case cmdFundGuardMode.name:
 			cmd := geneQueryFundGuardCmd()
-			if cmd.parse(args){
+			if cmd.parse(args) {
 				handleCmdForChain(func() *RPCResObjCmd {
 					return chainOp.QueryFundGuardMode(cmd.addr)
 				})

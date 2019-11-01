@@ -21,8 +21,8 @@ import (
 	"io"
 	"math/big"
 
-	"github.com/zvchain/zvchain/common"
-	"github.com/zvchain/zvchain/common/ed25519"
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/common/ed25519"
 )
 
 const (

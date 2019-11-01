@@ -3,14 +3,14 @@ package monitor
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/zvchain/zvchain/log"
+	"github.com/darren0718/zvchain/log"
 	"time"
 
 	"github.com/hashicorp/golang-lru"
 
-	"github.com/zvchain/zvchain/common"
-	"github.com/zvchain/zvchain/middleware/notify"
-	"github.com/zvchain/zvchain/middleware/types"
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/middleware/notify"
+	"github.com/darren0718/zvchain/middleware/types"
 )
 
 /*
@@ -65,21 +65,21 @@ func (btl *blockTraceLogs) addLog(log *PerformTraceLogger) {
 	}
 }
 
-func (btl *blockTraceLogs) onBlockAddSuccess(message notify.Message) error{
+func (btl *blockTraceLogs) onBlockAddSuccess(message notify.Message) error {
 	block := message.GetData().(*types.Block)
 
-	var(
+	var (
 		err error
-		bs []byte
+		bs  []byte
 	)
 	hash := block.Header.Hash.Hex()
 	if v, ok := btl.logs.Get(hash); ok {
 		logs := v.([]*PerformTraceLogger)
 		for _, log := range logs {
 			bs, err = json.Marshal(log)
-			if err!=nil{
-				traceLogger.Errorf("onBlockAddSuccess Marshal log error,error is %v",err)
-			}else{
+			if err != nil {
+				traceLogger.Errorf("onBlockAddSuccess Marshal log error,error is %v", err)
+			} else {
 				traceLogger.Infof(string(bs))
 			}
 		}

@@ -23,7 +23,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/zvchain/zvchain/core"
+	"github.com/darren0718/zvchain/core"
 )
 
 const code = `

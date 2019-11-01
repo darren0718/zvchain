@@ -15,7 +15,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/zvchain/zvchain/common/ed25519/edwards25519"
+	"github.com/darren0718/zvchain/common/ed25519/edwards25519"
 )
 
 type zeroReader struct{}

@@ -17,8 +17,8 @@
 package model
 
 import (
-	"github.com/zvchain/zvchain/common"
-	"github.com/zvchain/zvchain/consensus/groupsig"
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/consensus/groupsig"
 )
 
 // SignData is data signature structure

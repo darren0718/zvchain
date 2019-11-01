@@ -20,10 +20,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/zvchain/zvchain/common"
+	"github.com/darren0718/zvchain/common"
 
 	"github.com/beevik/ntp"
-	"github.com/zvchain/zvchain/middleware/ticker"
+	"github.com/darren0718/zvchain/middleware/ticker"
 )
 
 // TimeStamp in milliseconds

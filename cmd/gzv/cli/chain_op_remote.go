@@ -19,14 +19,14 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/zvchain/zvchain/consensus/base"
+	"github.com/darren0718/zvchain/consensus/base"
 	"io/ioutil"
 	"net/http"
 	"strings"
 
-	"github.com/zvchain/zvchain/common"
-	"github.com/zvchain/zvchain/consensus/groupsig"
-	"github.com/zvchain/zvchain/middleware/types"
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/consensus/groupsig"
+	"github.com/darren0718/zvchain/middleware/types"
 )
 
 type RemoteChainOpImpl struct {
@@ -178,7 +178,7 @@ func (ca *RemoteChainOpImpl) Balance(addr string) *RPCResObjCmd {
 	return ca.request("balance", addr)
 }
 
-func (ca *RemoteChainOpImpl)QueryFundGuardMode(addr string) *RPCResObjCmd{
+func (ca *RemoteChainOpImpl) QueryFundGuardMode(addr string) *RPCResObjCmd {
 	return ca.request("guardmode", addr)
 }
 

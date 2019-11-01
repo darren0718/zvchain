@@ -18,27 +18,27 @@ package core
 import (
 	"bytes"
 	"fmt"
+	"github.com/darren0718/zvchain/log"
 	"github.com/sirupsen/logrus"
-	"github.com/zvchain/zvchain/log"
 	"time"
 
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/middleware/notify"
+	"github.com/darren0718/zvchain/middleware/ticker"
+	"github.com/darren0718/zvchain/middleware/types"
+	"github.com/darren0718/zvchain/network"
 	lru "github.com/hashicorp/golang-lru"
-	"github.com/zvchain/zvchain/common"
-	"github.com/zvchain/zvchain/middleware/notify"
-	"github.com/zvchain/zvchain/middleware/ticker"
-	"github.com/zvchain/zvchain/middleware/types"
-	"github.com/zvchain/zvchain/network"
 )
 
 const (
-	txNofifyInterval    = 5
-	txNotifyRoutine     = "ts_notify"
-	tickerTxSyncTimeout = "sync_tx_timeout"
-	txNotifyGap         = 60
-	txMaxNotifyPerTime  = 50
-
-	txReqRoutine  = "ts_req"
-	txReqInterval = 5
+	txNofifyInterval       = 5
+	txNotifyRoutine        = "ts_notify"
+	tickerTxSyncTimeout    = "sync_tx_timeout"
+	txNotifyGap            = 60
+	txMaxNotifyPerTime     = 50
+	txSyncNeightborTimeout = 5
+	txReqRoutine           = "ts_req"
+	txReqInterval          = 5
 
 	txPeerMaxLimit = 3000
 
@@ -50,6 +50,7 @@ type txSyncer struct {
 	pool          *txPool
 	chain         *FullBlockChain
 	rctNotifiy    *lru.Cache
+	nonceErrTxs   *lru.Cache
 	ticker        *ticker.GlobalTicker
 	candidateKeys *lru.Cache
 	networkImpl   network.Network
@@ -135,6 +136,7 @@ func (ptk *peerTxsHashes) forEach(f func(k common.Hash) bool) {
 func initTxSyncer(chain *FullBlockChain, pool *txPool, networkImpl network.Network) {
 	s := &txSyncer{
 		rctNotifiy:    common.MustNewLRUCache(txPeerMaxLimit),
+		nonceErrTxs:   common.MustNewLRUCache(3000),
 		pool:          pool,
 		ticker:        ticker.NewGlobalTicker("tx_syncer"),
 		candidateKeys: common.MustNewLRUCache(3000),
@@ -312,8 +314,11 @@ func (ts *txSyncer) reqTxsRoutine() bool {
 		rqs := make([]common.Hash, 0)
 		ptk.forEach(func(k common.Hash) bool {
 			if exist, _ := BlockChainImpl.GetTransactionPool().IsTransactionExisted(k); !exist {
-				rqs = append(rqs, k)
-				ptk.addSendHash(k)
+				_, ok := ts.nonceErrTxs.Peek(k)
+				if !ok {
+					rqs = append(rqs, k)
+					ptk.addSendHash(k)
+				}
 			}
 			return true
 		})
@@ -339,7 +344,7 @@ func (ts *txSyncer) requestTxs(id string, hash *[]common.Hash) {
 
 	ts.chain.ticker.RegisterOneTimeRoutine(ts.syncTimeoutRoutineName(id), func() bool {
 		return ts.syncTxComplete(id, true)
-	}, syncNeightborTimeout)
+	}, txSyncNeightborTimeout)
 }
 
 func (ts *txSyncer) syncTxComplete(id string, timeout bool) bool {

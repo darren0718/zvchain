@@ -17,7 +17,7 @@ package types
 
 import (
 	"bytes"
-	"github.com/zvchain/zvchain/common"
+	"github.com/darren0718/zvchain/common"
 	"testing"
 )
 

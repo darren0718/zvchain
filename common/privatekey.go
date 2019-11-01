@@ -23,8 +23,8 @@ import (
 	"math/big"
 	"strings"
 
-	"github.com/zvchain/zvchain/common/ecies"
-	"github.com/zvchain/zvchain/common/secp256k1"
+	"github.com/darren0718/zvchain/common/ecies"
+	"github.com/darren0718/zvchain/common/secp256k1"
 )
 
 // PrivateKey data struct

@@ -19,12 +19,12 @@ package types
 import (
 	"bytes"
 	"fmt"
-	"github.com/zvchain/zvchain/params"
+	"github.com/darren0718/zvchain/params"
 	"math/big"
 	"sync/atomic"
 
-	"github.com/zvchain/zvchain/common"
-	"github.com/zvchain/zvchain/middleware/time"
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/middleware/time"
 )
 
 type AddBlockOnChainSituation string

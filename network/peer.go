@@ -24,8 +24,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/zvchain/zvchain/common"
-	zvTime "github.com/zvchain/zvchain/middleware/time"
+	"github.com/darren0718/zvchain/common"
+	zvTime "github.com/darren0718/zvchain/middleware/time"
 )
 
 type PeerSource int32
@@ -314,10 +314,8 @@ func (p *Peer) onConnect(id uint64, session uint32, p2pType uint32, isAccepted b
 	p.resetData()
 	p.resetAuthContext()
 	p.connecting = false
-	if session > p.sessionID {
+	p.sessionID = session
 
-		p.sessionID = session
-	}
 	if len(ip) > 0 {
 		p.IP = net.ParseIP(ip)
 	}
@@ -326,9 +324,9 @@ func (p *Peer) onConnect(id uint64, session uint32, p2pType uint32, isAccepted b
 	}
 	p.connectTime = time.Now()
 
+	p.sendList.pendingSend = 0
 	netCore.ping(p.ID, nil)
 
-	p.sendList.pendingSend = 0
 	p.sendList.autoSend(p)
 }
 

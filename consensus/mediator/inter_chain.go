@@ -20,14 +20,14 @@ import (
 	"math"
 	"math/big"
 
-	"github.com/zvchain/zvchain/common"
-	"github.com/zvchain/zvchain/common/ed25519"
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/common/ed25519"
 
-	"github.com/zvchain/zvchain/consensus/base"
-	"github.com/zvchain/zvchain/consensus/group"
-	"github.com/zvchain/zvchain/consensus/groupsig"
-	"github.com/zvchain/zvchain/consensus/model"
-	"github.com/zvchain/zvchain/middleware/types"
+	"github.com/darren0718/zvchain/consensus/base"
+	"github.com/darren0718/zvchain/consensus/group"
+	"github.com/darren0718/zvchain/consensus/groupsig"
+	"github.com/darren0718/zvchain/consensus/model"
+	"github.com/darren0718/zvchain/middleware/types"
 )
 
 // ConsensusHelperImpl implements ConsensusHelper interface.

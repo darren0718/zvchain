@@ -19,7 +19,7 @@ import (
 	"fmt"
 	"unsafe"
 
-	"github.com/zvchain/zvchain/common"
+	"github.com/darren0718/zvchain/common"
 )
 
 //go:generate gencodec -type Receipt -field-override receiptMarshaling -out gen_receipt_json.go

@@ -26,9 +26,9 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/darren0718/zvchain/middleware/statistics"
+	zvTime "github.com/darren0718/zvchain/middleware/time"
 	"github.com/gogo/protobuf/proto"
-	"github.com/zvchain/zvchain/middleware/statistics"
-	zvTime "github.com/zvchain/zvchain/middleware/time"
 )
 
 // Version is p2p proto version
@@ -672,10 +672,7 @@ func (nc *NetCore) handlePing(req *MsgPing, p *Peer) error {
 
 	ip := net.ParseIP(req.From.IP)
 	port := int(req.From.Port)
-	if ip != nil && port > 0 {
-		p.IP = ip
-		p.Port = port
-	}
+
 	p.chainID = uint16(req.ChainID)
 
 	from := net.UDPAddr{IP: net.ParseIP(req.From.IP), Port: int(req.From.Port)}

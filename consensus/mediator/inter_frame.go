@@ -16,10 +16,10 @@
 package mediator
 
 import (
-	"github.com/zvchain/zvchain/common"
-	"github.com/zvchain/zvchain/consensus/logical"
-	"github.com/zvchain/zvchain/consensus/model"
-	"github.com/zvchain/zvchain/consensus/net"
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/consensus/logical"
+	"github.com/darren0718/zvchain/consensus/model"
+	"github.com/darren0718/zvchain/consensus/net"
 )
 
 // Proc is the global unique instance of the consensus engine

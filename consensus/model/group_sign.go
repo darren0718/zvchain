@@ -19,7 +19,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/zvchain/zvchain/consensus/groupsig"
+	"github.com/darren0718/zvchain/consensus/groupsig"
 )
 
 // GroupSignGenerator defines the group signature generator.

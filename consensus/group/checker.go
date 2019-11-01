@@ -22,10 +22,10 @@ import (
 	"reflect"
 	"sync"
 
-	"github.com/zvchain/zvchain/common"
-	"github.com/zvchain/zvchain/consensus/groupsig"
-	"github.com/zvchain/zvchain/consensus/model"
-	"github.com/zvchain/zvchain/middleware/types"
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/consensus/groupsig"
+	"github.com/darren0718/zvchain/consensus/model"
+	"github.com/darren0718/zvchain/middleware/types"
 )
 
 const doFreezeReceivedRate = 0.5 // will do freeze directly if piece/mpk received rate bigger than value in this round

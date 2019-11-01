@@ -16,10 +16,10 @@
 package net
 
 import (
+	"github.com/darren0718/zvchain/consensus/model"
+	tas_middleware_pb "github.com/darren0718/zvchain/middleware/pb"
+	"github.com/darren0718/zvchain/middleware/types"
 	"github.com/gogo/protobuf/proto"
-	"github.com/zvchain/zvchain/consensus/model"
-	tas_middleware_pb "github.com/zvchain/zvchain/middleware/pb"
-	"github.com/zvchain/zvchain/middleware/types"
 )
 
 func marshalConsensusVerifyMessage(m *model.ConsensusVerifyMessage) ([]byte, error) {
