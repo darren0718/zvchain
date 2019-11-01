@@ -21,6 +21,7 @@ import (
 	"github.com/darren0718/zvchain/common"
 	"github.com/darren0718/zvchain/log"
 	"github.com/darren0718/zvchain/middleware/types"
+	"github.com/darren0718/zvchain/storage/tasdb"
 	lru "github.com/hashicorp/golang-lru"
 	"github.com/vmihailenco/msgpack"
 	"math"

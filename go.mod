@@ -13,7 +13,6 @@ require (
 	github.com/davecgh/go-spew v1.1.1
 	github.com/glacjay/goini v0.0.0-20161120062552-fd3024d87ee2
 	github.com/gogo/protobuf v1.2.1
-	github.com/gohouse/converter v0.0.3 // indirect
 	github.com/gohouse/gorose v1.0.5
 	github.com/golang/protobuf v1.3.1
 	github.com/hashicorp/golang-lru v0.5.1
@@ -25,6 +24,7 @@ require (
 	github.com/sirupsen/logrus v1.4.2
 	github.com/syndtr/goleveldb v1.0.0
 	github.com/vmihailenco/msgpack v4.0.4+incompatible
+	github.com/zvchain/zvchain v1.0.2
 	golang.org/x/crypto v0.0.0-20190513172903-22d7a77e9e5f
 	golang.org/x/net v0.0.0-20190620200207-3b0461eec859
 	golang.org/x/sys v0.0.0-20190523142557-0e01d883c5c5
