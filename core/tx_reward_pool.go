@@ -16,9 +16,9 @@
 package core
 
 import (
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/middleware/types"
 	lru "github.com/hashicorp/golang-lru"
-	"github.com/zvchain/zvchain/common"
-	"github.com/zvchain/zvchain/middleware/types"
 )
 
 type rewardPool struct {

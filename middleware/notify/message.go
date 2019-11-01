@@ -16,7 +16,7 @@
 package notify
 
 import (
-	"github.com/zvchain/zvchain/middleware/types"
+	"github.com/darren0718/zvchain/middleware/types"
 )
 
 type BlockOnChainSuccMessage struct {

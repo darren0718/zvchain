@@ -19,11 +19,11 @@
 package types
 
 import (
-	"github.com/zvchain/zvchain/storage/account"
+	"github.com/darren0718/zvchain/storage/account"
 	"math/big"
 
-	"github.com/zvchain/zvchain/common"
-	"github.com/zvchain/zvchain/storage/trie"
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/storage/trie"
 )
 
 type AccountDB interface {
@@ -44,7 +44,7 @@ type AccountDB interface {
 	AddRefund(uint64)
 	GetRefund() uint64
 
-	GetStateObject(common.Address)account.AccAccesser
+	GetStateObject(common.Address) account.AccAccesser
 	GetData(common.Address, []byte) []byte
 	SetData(common.Address, []byte, []byte)
 	RemoveData(common.Address, []byte)

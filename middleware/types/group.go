@@ -15,7 +15,7 @@
 
 package types
 
-import "github.com/zvchain/zvchain/common"
+import "github.com/darren0718/zvchain/common"
 
 // SeedI is the seed block which the group-create routine based on
 type SeedI interface {

@@ -19,13 +19,13 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/zvchain/zvchain/common"
+	"github.com/darren0718/zvchain/common"
 
 	//"fmt"
 	"bytes"
 	"log"
 
-	"github.com/zvchain/zvchain/consensus/groupsig/bncurve"
+	"github.com/darren0718/zvchain/consensus/groupsig/bncurve"
 	"golang.org/x/crypto/sha3"
 )
 

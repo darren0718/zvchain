@@ -16,9 +16,9 @@
 package group
 
 import (
-	"github.com/zvchain/zvchain/common"
-	"github.com/zvchain/zvchain/consensus/groupsig"
-	"github.com/zvchain/zvchain/consensus/model"
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/consensus/groupsig"
+	"github.com/darren0718/zvchain/consensus/model"
 	"math/rand"
 	"testing"
 )

@@ -1,9 +1,9 @@
 package core
 
 import (
-	"github.com/zvchain/zvchain/common"
-	"github.com/zvchain/zvchain/middleware/types"
-	"github.com/zvchain/zvchain/storage/account"
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/middleware/types"
+	"github.com/darren0718/zvchain/storage/account"
 	"math/big"
 	"testing"
 )
@@ -179,7 +179,7 @@ func TestInit(t *testing.T) {
 	setup(t)
 	defer clearSelf(t)
 	MinerManagerImpl.genFundGuardNodes(accountDB)
-	for _, addr := range types.GetGuardAddress(){
+	for _, addr := range types.GetGuardAddress() {
 		fd, _ := getFundGuardNode(accountDB, addr)
 		if fd == nil {
 			t.Fatalf("except got value,but got nil")

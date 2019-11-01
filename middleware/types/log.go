@@ -18,7 +18,7 @@ package types
 import (
 	"fmt"
 
-	"github.com/zvchain/zvchain/common"
+	"github.com/darren0718/zvchain/common"
 )
 
 //go:generate gencodec -type Log -field-override logMarshaling -out gen_log_json.go

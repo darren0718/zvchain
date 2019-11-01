@@ -21,15 +21,15 @@ package account
 import (
 	"bytes"
 	"fmt"
-	"github.com/zvchain/zvchain/log"
+	"github.com/darren0718/zvchain/log"
 	"math/big"
 	"sync"
 
 	"io"
 
-	"github.com/zvchain/zvchain/common"
-	"github.com/zvchain/zvchain/storage/serialize"
-	"github.com/zvchain/zvchain/storage/trie"
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/storage/serialize"
+	"github.com/darren0718/zvchain/storage/trie"
 	"golang.org/x/crypto/sha3"
 )
 
@@ -180,12 +180,11 @@ func (ao *accountObject) getTrie(db AccountDatabase) Trie {
 	return ao.trie
 }
 
-
-func (ao *accountObject) GetRootHash() common.Hash{
+func (ao *accountObject) GetRootHash() common.Hash {
 	return ao.data.Root
 }
 
-func (ao *accountObject) GetAddr() common.Address{
+func (ao *accountObject) GetAddr() common.Address {
 	return ao.address
 }
 

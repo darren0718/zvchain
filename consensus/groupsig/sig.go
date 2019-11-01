@@ -22,9 +22,9 @@ import (
 	"math/big"
 	"sort"
 
-	"github.com/zvchain/zvchain/common"
-	"github.com/zvchain/zvchain/consensus/base"
-	"github.com/zvchain/zvchain/consensus/groupsig/bncurve"
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/consensus/base"
+	"github.com/darren0718/zvchain/consensus/groupsig/bncurve"
 )
 
 const SignatureLength = 33

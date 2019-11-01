@@ -17,12 +17,12 @@ package net
 
 import (
 	"fmt"
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/consensus/groupsig"
+	"github.com/darren0718/zvchain/consensus/model"
+	tas_middleware_pb "github.com/darren0718/zvchain/middleware/pb"
+	"github.com/darren0718/zvchain/middleware/types"
 	"github.com/gogo/protobuf/proto"
-	"github.com/zvchain/zvchain/common"
-	"github.com/zvchain/zvchain/consensus/groupsig"
-	"github.com/zvchain/zvchain/consensus/model"
-	tas_middleware_pb "github.com/zvchain/zvchain/middleware/pb"
-	"github.com/zvchain/zvchain/middleware/types"
 )
 
 func baseMessage(sign *tas_middleware_pb.SignData) *model.BaseSignedMessage {

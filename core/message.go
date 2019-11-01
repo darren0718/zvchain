@@ -16,9 +16,9 @@
 package core
 
 import (
+	tas_middleware_pb "github.com/darren0718/zvchain/middleware/pb"
+	"github.com/darren0718/zvchain/middleware/types"
 	"github.com/gogo/protobuf/proto"
-	tas_middleware_pb "github.com/zvchain/zvchain/middleware/pb"
-	"github.com/zvchain/zvchain/middleware/types"
 )
 
 type MessageBase struct {

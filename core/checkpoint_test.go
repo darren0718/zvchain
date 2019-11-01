@@ -16,12 +16,12 @@
 package core
 
 import (
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/consensus/groupsig"
+	"github.com/darren0718/zvchain/middleware/types"
+	"github.com/darren0718/zvchain/storage/account"
+	"github.com/darren0718/zvchain/storage/trie"
 	"github.com/sirupsen/logrus"
-	"github.com/zvchain/zvchain/common"
-	"github.com/zvchain/zvchain/consensus/groupsig"
-	"github.com/zvchain/zvchain/middleware/types"
-	"github.com/zvchain/zvchain/storage/account"
-	"github.com/zvchain/zvchain/storage/trie"
 	"math/big"
 	"math/rand"
 	"os"
@@ -122,8 +122,7 @@ type accountDB4CPTest struct {
 	datas map[string][]byte
 }
 
-
-func (db *accountDB4CPTest) Database() account.AccountDatabase{
+func (db *accountDB4CPTest) Database() account.AccountDatabase {
 	panic("implement me")
 }
 
@@ -131,7 +130,7 @@ func (db *accountDB4CPTest) CreateAccount(common.Address) {
 	panic("implement me")
 }
 
-func (db *accountDB4CPTest) GetStateObject(common.Address)account.AccAccesser{
+func (db *accountDB4CPTest) GetStateObject(common.Address) account.AccAccesser {
 	panic("implement me")
 }
 

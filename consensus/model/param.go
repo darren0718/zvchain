@@ -16,7 +16,7 @@
 package model
 
 import (
-	"github.com/zvchain/zvchain/common"
+	"github.com/darren0718/zvchain/common"
 )
 
 // defines some const params of the consensus engine

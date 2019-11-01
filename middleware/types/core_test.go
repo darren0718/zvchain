@@ -21,8 +21,8 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/zvchain/zvchain/common"
-	"github.com/zvchain/zvchain/storage/serialize"
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/storage/serialize"
 )
 
 func TestTransaction(t *testing.T) {

@@ -18,7 +18,7 @@ package types
 import (
 	"math/big"
 
-	"github.com/zvchain/zvchain/common"
+	"github.com/darren0718/zvchain/common"
 )
 
 // BlockChain is a interface, encapsulates some methods for manipulating the blockchain

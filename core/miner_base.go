@@ -18,11 +18,11 @@ package core
 import (
 	"bytes"
 	"fmt"
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/log"
+	"github.com/darren0718/zvchain/middleware/types"
+	"github.com/darren0718/zvchain/storage/account"
 	"github.com/vmihailenco/msgpack"
-	"github.com/zvchain/zvchain/common"
-	"github.com/zvchain/zvchain/log"
-	"github.com/zvchain/zvchain/middleware/types"
-	"github.com/zvchain/zvchain/storage/account"
 )
 
 const (
@@ -234,7 +234,7 @@ func getFundGuardKey(prefix []byte, address common.Address) []byte {
 	return buf.Bytes()
 }
 
-func getMinerFromStateObject(db account.AccountDatabase, stateObject account.AccAccesser,mType types.MinerType) (*types.Miner, error) {
+func getMinerFromStateObject(db account.AccountDatabase, stateObject account.AccAccesser, mType types.MinerType) (*types.Miner, error) {
 	data := stateObject.GetData(db, getMinerKey(mType))
 	if data != nil && len(data) > 0 {
 		var miner types.Miner

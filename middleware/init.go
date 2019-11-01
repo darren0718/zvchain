@@ -20,8 +20,8 @@
 package middleware
 
 import (
-	"github.com/zvchain/zvchain/middleware/notify"
-	"github.com/zvchain/zvchain/middleware/time"
+	"github.com/darren0718/zvchain/middleware/notify"
+	"github.com/darren0718/zvchain/middleware/time"
 )
 
 func InitMiddleware() error {

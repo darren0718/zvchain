@@ -1,7 +1,7 @@
 package cli
 
 import (
-	"github.com/zvchain/zvchain/common"
+	"github.com/darren0718/zvchain/common"
 	"testing"
 )
 
@@ -10,10 +10,9 @@ func TestStringToUint(t *testing.T) {
 	//case 0
 	numb := ""
 	result, _ := parseRaFromString(numb)
-	if result != 0{
+	if result != 0 {
 		t.Fatal("should be equal")
 	}
-
 
 	//case 1
 	numb = "123"

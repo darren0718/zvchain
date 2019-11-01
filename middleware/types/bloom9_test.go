@@ -53,7 +53,7 @@ func TestBloom(t *testing.T) {
 import (
 	"testing"
 
-	"github.com/zvchain/zvchain/vm/core/state"
+	"github.com/darren0718/zvchain/vm/core/state"
 )
 
 func TestBloom9(t *testing.T) {

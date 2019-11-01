@@ -20,8 +20,8 @@ package trie
 import (
 	"bytes"
 	"fmt"
-	"github.com/zvchain/zvchain/common"
-	"github.com/zvchain/zvchain/log"
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/log"
 )
 
 var (

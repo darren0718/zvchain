@@ -25,8 +25,8 @@ import (
 	datacommon "github.com/Workiva/go-datastructures/common"
 	"github.com/Workiva/go-datastructures/slice/skip"
 
-	"github.com/zvchain/zvchain/common"
-	"github.com/zvchain/zvchain/middleware/types"
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/middleware/types"
 )
 
 const maxSyncCountPreSource = 50 // max count of tx with same source to sync to neighbour node

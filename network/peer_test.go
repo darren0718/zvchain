@@ -18,11 +18,11 @@ package network
 import (
 	"bytes"
 	"encoding/binary"
-	"github.com/zvchain/zvchain/middleware/time"
+	"github.com/darren0718/zvchain/middleware/time"
 	"math"
 	"testing"
 
-	"github.com/zvchain/zvchain/common"
+	"github.com/darren0718/zvchain/common"
 )
 
 func TestPeerAuth(t *testing.T) {

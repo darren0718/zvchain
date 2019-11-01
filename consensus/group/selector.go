@@ -17,8 +17,8 @@ package group
 
 import (
 	"container/list"
-	"github.com/zvchain/zvchain/consensus/base"
-	"github.com/zvchain/zvchain/consensus/model"
+	"github.com/darren0718/zvchain/consensus/base"
+	"github.com/darren0718/zvchain/consensus/model"
 )
 
 type candidateSelector struct {

@@ -19,16 +19,16 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/zvchain/zvchain/middleware/types"
+	"github.com/darren0718/zvchain/middleware/types"
 	"math/big"
 	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/zvchain/zvchain/common"
-	"github.com/zvchain/zvchain/storage/account"
-	"github.com/zvchain/zvchain/storage/tasdb"
-	"github.com/zvchain/zvchain/tvm"
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/storage/account"
+	"github.com/darren0718/zvchain/storage/tasdb"
+	"github.com/darren0718/zvchain/tvm"
 )
 
 const (
@@ -241,7 +241,7 @@ func (t *TvmCli) ExportAbi(contractName string, contractCode string) {
 		Code:         contractCode,
 		//ContractAddress: &contractAddress,
 	}
-	vm := tvm.NewTVM(nil, &contract,0)
+	vm := tvm.NewTVM(nil, &contract, 0)
 	defer func() {
 		vm.DelTVM()
 	}()

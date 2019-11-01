@@ -15,7 +15,7 @@
 
 package core
 
-import "github.com/zvchain/zvchain/middleware/types"
+import "github.com/darren0718/zvchain/middleware/types"
 
 // InitCore initialize the peerManagerImpl, BlockChainImpl and GroupChainImpl
 func InitCore(helper types.ConsensusHelper, account types.Account) error {

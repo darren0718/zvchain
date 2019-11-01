@@ -19,8 +19,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/zvchain/zvchain/common"
-	"github.com/zvchain/zvchain/core"
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/core"
 )
 
 type rewardTxHash struct {

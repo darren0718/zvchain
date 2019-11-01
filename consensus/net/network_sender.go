@@ -16,13 +16,13 @@
 package net
 
 import (
+	"github.com/darren0718/zvchain/common"
+	"github.com/darren0718/zvchain/consensus/groupsig"
+	"github.com/darren0718/zvchain/consensus/model"
+	"github.com/darren0718/zvchain/middleware/pb"
+	"github.com/darren0718/zvchain/middleware/types"
+	"github.com/darren0718/zvchain/network"
 	"github.com/gogo/protobuf/proto"
-	"github.com/zvchain/zvchain/common"
-	"github.com/zvchain/zvchain/consensus/groupsig"
-	"github.com/zvchain/zvchain/consensus/model"
-	"github.com/zvchain/zvchain/middleware/pb"
-	"github.com/zvchain/zvchain/middleware/types"
-	"github.com/zvchain/zvchain/network"
 )
 
 // NetworkServerImpl implements a network transmission interface for various types of data.
