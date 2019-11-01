@@ -71,11 +71,14 @@ func (rh *RewardHandler) OnMessageCastRewardSign(msg *model.CastRewardTransSignM
 		err = fmt.Errorf("verifyGroup is nil")
 		return err
 	}
-	pk := group.getMemberPubkey(msg.SI.GetID())
-	if !msg.VerifySign(pk) {
-		err = fmt.Errorf("verify sign fail, pk=%v, id=%v", pk, msg.SI.GetID())
-		return err
+	if !group.hasMember(msg.SI.GetID()) {
+		return nil
 	}
+	//pk := group.getMemberPubkey(msg.SI.GetID())
+	//if !msg.VerifySign(pk) {
+	//	err = fmt.Errorf("verify sign fail, pk=%v, id=%v", pk, msg.SI.GetID())
+	//	return err
+	//}
 
 	vctx := rh.processor.GetVctxByHeight(bh.Height)
 	if vctx == nil || vctx.prevBH.Hash != bh.PreHash {
@@ -209,6 +212,7 @@ func (rh *RewardHandler) signCastRewardReq(msg *model.CastRewardTransSignReqMess
 	}
 	// target ids legacy check
 	marks := make([]int, group.memberSize())
+	hasMe := false
 	for _, idIdx := range msg.Reward.TargetIds {
 		if idIdx < 0 || idIdx >= int32(group.memberSize()) {
 			err = fmt.Errorf("target id error:%v %v", idIdx, msg.Reward.TargetIds)
@@ -220,14 +224,26 @@ func (rh *RewardHandler) signCastRewardReq(msg *model.CastRewardTransSignReqMess
 			err = fmt.Errorf("duplicate target id found:%v %v", idIdx, msg.Reward.TargetIds)
 			return
 		}
+		mem := group.getMemberAt(int(idIdx))
+		if mem == nil {
+			stdLogger.Errorf("doesn't has member at %v", idIdx)
+			return
+		}
+		if mem.id.IsEqual(rh.processor.GetMinerID()) {
+			hasMe = true
+		}
+	}
+	if !hasMe {
+		stdLogger.Warnf("reward trans doesn't include me, refuse %v", bh.Height)
+		return false, nil
 	}
 
 	if !slot.hasSignedTxHash(reward.TxHash) {
-		mpk := group.getMemberPubkey(msg.SI.GetID())
-		if !msg.VerifySign(mpk) {
-			err = fmt.Errorf("verify sign fail, gseed=%v, uid=%v", gSeed, msg.SI.GetID())
-			return
-		}
+		//mpk := group.getMemberPubkey(msg.SI.GetID())
+		//if !msg.VerifySign(mpk) {
+		//	err = fmt.Errorf("verify sign fail, gseed=%v, uid=%v", gSeed, msg.SI.GetID())
+		//	return
+		//}
 
 		tempGSignGenerator := model.NewGroupSignGenerator(int(group.header.Threshold()))
 
@@ -242,10 +258,10 @@ func (rh *RewardHandler) signCastRewardReq(msg *model.CastRewardTransSignReqMess
 
 			// If no signature of the given id in the slot, then verification will be needed.
 			if sig, ok := slot.gSignGenerator.GetWitness(mem.id); !ok {
-				if !groupsig.VerifySig(mem.pk, bh.Hash.Bytes(), sign) {
-					err = fmt.Errorf("verify member sign fail, id=%v", mem.id)
-					return
-				}
+				//if !groupsig.VerifySig(mem.pk, bh.Hash.Bytes(), sign) {
+				//	err = fmt.Errorf("verify member sign fail, id=%v", mem.id)
+				//	return
+				//}
 				// Add sign to the slot gSignGenerator
 				slot.gSignGenerator.AddWitnessForce(mem.id, sign)
 				// Add sign to the temp gSignGenerator

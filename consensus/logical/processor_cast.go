@@ -183,6 +183,8 @@ func (p *Processor) consensusFinalize(vctx *VerifyContext, slot *SlotContext) {
 		Hash: bh.Hash,
 	}
 
+	p.rewardHandler.reqRewardTransSign(vctx, bh)
+
 	sKey := p.groupReader.getGroupSignatureSeckey(bh.Group)
 	// sign the message and send to other members in the verifyGroup
 	if msg.GenSign(model.NewSecKeyInfo(p.GetMinerID(), sKey), msg) {

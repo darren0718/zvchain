@@ -339,14 +339,14 @@ func (p *Processor) doVerify(cvm *model.ConsensusVerifyMessage, vctx *VerifyCont
 		return
 	}
 
-	if !cvm.VerifySign(pk) {
-		err = fmt.Errorf("verify sign fail, gseed=%v, id=%v", gSeed, cvm.SI.GetID())
-		return
-	}
-	if !groupsig.VerifySig(pk, vctx.prevBH.Random, cvm.RandomSign) {
-		err = fmt.Errorf("verify random sign fail")
-		return
-	}
+	//if !cvm.VerifySign(pk) {
+	//	err = fmt.Errorf("verify sign fail, gseed=%v, id=%v", gSeed, cvm.SI.GetID())
+	//	return
+	//}
+	//if !groupsig.VerifySig(pk, vctx.prevBH.Random, cvm.RandomSign) {
+	//	err = fmt.Errorf("verify random sign fail")
+	//	return
+	//}
 
 	ret, err = slot.AcceptVerifyPiece(cvm.SI.GetID(), cvm.SI.DataSign, cvm.RandomSign)
 	vctx.increaseVerifyNum()
@@ -542,6 +542,7 @@ func (p *Processor) OnMessageResponseProposalBlock(msg *model.ResponseProposalBl
 		err = fmt.Errorf("aggregated signature is nil")
 		return
 	}
+
 	err = p.onBlockSignAggregation(&block, *aggSign, slot.rSignGenerator.GetGroupSign())
 	if err != nil {
 		slot.setSlotStatus(slFailed)
