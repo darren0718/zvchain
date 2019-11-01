@@ -40,6 +40,11 @@ func NewIterator(it NodeIterator) *Iterator {
 	}
 }
 
+// EnableNodeCache enables node cache
+func (it *Iterator) EnableNodeCache() {
+	it.nodeIt.EnableNodeCache()
+}
+
 // Next moves the iterator forward one key-value entry.
 func (it *Iterator) Next() bool {
 	for it.nodeIt.Next(true) {
@@ -99,6 +104,11 @@ type NodeIterator interface {
 	// iterator is not positioned at a leaf. Callers must not retain references
 	// to the value after calling Next.
 	LeafProof() [][]byte
+
+	// EnableNodeCache enables the node cache when iterates the trie, which may
+	// accelerate most the visits of those tries that does not change often and
+	// accelerate little with those tries than change often
+	EnableNodeCache()
 }
 
 // nodeIteratorState represents the iteration state at one particular node of the
@@ -112,10 +122,11 @@ type nodeIteratorState struct {
 }
 
 type nodeIterator struct {
-	trie  *Trie                // Trie being iterated
-	stack []*nodeIteratorState // Hierarchy of trie nodes persisting the iteration state
-	path  []byte               // Path to the current node
-	err   error                // Failure set in case of an internal error in the iterator
+	trie            *Trie                // Trie being iterated
+	stack           []*nodeIteratorState // Hierarchy of trie nodes persisting the iteration state
+	path            []byte               // Path to the current node
+	err             error                // Failure set in case of an internal error in the iterator
+	enableNodeCache bool                 // Whether node cache is enabled
 }
 
 // errIteratorEnd is stored in nodeIterator.err when iteration is done.
@@ -135,9 +146,13 @@ func newNodeIterator(trie *Trie, start []byte) NodeIterator {
 	if trie.Hash() == emptyState {
 		return new(nodeIterator)
 	}
-	it := &nodeIterator{trie: trie}
+	it := &nodeIterator{trie: trie, enableNodeCache: false}
 	it.err = it.seek(start)
 	return it
+}
+
+func (it *nodeIterator) EnableNodeCache() {
+	it.enableNodeCache = true
 }
 
 func (it *nodeIterator) Hash() common.Hash {
@@ -261,7 +276,7 @@ func (it *nodeIterator) peek(descend bool) (*nodeIteratorState, *int, []byte, er
 		if root != emptyRoot {
 			state.hash = root
 		}
-		err := state.resolve(it.trie, nil)
+		err := state.resolve(it.trie, nil, it.enableNodeCache)
 		return state, nil, nil, err
 	}
 	if !descend {
@@ -278,7 +293,7 @@ func (it *nodeIterator) peek(descend bool) (*nodeIteratorState, *int, []byte, er
 		}
 		state, path, ok := it.nextChild(parent, ancestor)
 		if ok {
-			if err := state.resolve(it.trie, path); err != nil {
+			if err := state.resolve(it.trie, path, it.enableNodeCache); err != nil {
 				return parent, &parent.index, path, err
 			}
 			return state, &parent.index, path, nil
@@ -289,14 +304,30 @@ func (it *nodeIterator) peek(descend bool) (*nodeIteratorState, *int, []byte, er
 	return nil, nil, nil, errIteratorEnd
 }
 
-func (st *nodeIteratorState) resolve(tr *Trie, path []byte) error {
+func (st *nodeIteratorState) resolve(tr *Trie, path []byte, cacheEnable bool) error {
 	if hash, ok := st.node.(hashNode); ok {
-		resolved, err := tr.resolveHash(hash, path)
-		if err != nil {
-			return err
+		h := common.BytesToHash(hash)
+		var resolved node
+		if cacheEnable {
+			if n := ncache.getNode(h); n == nil {
+				rs, raw, err := tr.resolveHashAndGetRawBytes(hash, path)
+				if err != nil {
+					return err
+				}
+				resolved = rs
+				ncache.storeNode(h, resolved, raw)
+			} else {
+				resolved = n
+			}
+		} else {
+			rs, err := tr.resolveHash(hash, path)
+			if err != nil {
+				return err
+			}
+			resolved = rs
 		}
 		st.node = resolved
-		st.hash = common.BytesToHash(hash)
+		st.hash = h
 	}
 	return nil
 }
