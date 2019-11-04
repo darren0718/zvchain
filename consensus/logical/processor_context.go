@@ -105,6 +105,7 @@ type castBlockContexts struct {
 	verifyMsgCaches *lru.Cache // hash -> *verifyMsgCache, Cache verification message
 	recentCasted    *lru.Cache // height -> *castedBlock
 	chain           types.BlockChain
+	tryVerified     *lru.Cache
 }
 
 func newCastBlockContexts(chain types.BlockChain) *castBlockContexts {
@@ -115,6 +116,7 @@ func newCastBlockContexts(chain types.BlockChain) *castBlockContexts {
 		reservedVctx:    common.MustNewLRUCache(100),
 		verifyMsgCaches: common.MustNewLRUCache(200),
 		recentCasted:    common.MustNewLRUCache(200),
+		tryVerified:     common.MustNewLRUCache(200),
 		chain:           chain,
 	}
 }

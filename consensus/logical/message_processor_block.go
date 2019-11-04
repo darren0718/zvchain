@@ -398,6 +398,26 @@ func (p *Processor) OnMessageVerify(cvm *model.ConsensusVerifyMessage) (err erro
 	if vctx == nil {
 		err = fmt.Errorf("verify context is nil, cache msg")
 		p.blockContexts.addVerifyMsg(cvm)
+
+		if !p.blockContexts.tryVerified.Contains(blockHash) {
+
+			top := p.MainChain.QueryTopBlock()
+			gSeed := p.CalcVerifyGroup(top, top.Height+1)
+
+			var vmsg model.ConsensusVerifyMessage
+			vmsg.BlockHash = blockHash
+			sKey := p.groupReader.getGroupSignatureSeckey(gSeed)
+			// sign the message and send to other members in the verifyGroup
+			if vmsg.GenSign(model.NewSecKeyInfo(p.GetMinerID(), sKey), &vmsg) {
+				p.blockContexts.tryVerified.Add(blockHash, struct{}{})
+				vmsg.GenRandomSign(sKey, top.Random)
+				p.NetServer.SendVerifiedCast(&vmsg, gSeed)
+				tlog.log("tryToSign,success,hash=%v,height=%v,pre=%v", blockHash, top.Height+1, top.Hash)
+			} else {
+				tlog.log("tryToSign,fail,hash=%v,height=%v,pre=%v", blockHash, top.Height+1, top.Hash)
+			}
+		}
+
 		return
 	}
 	traceLog.SetHeight(vctx.castHeight)
