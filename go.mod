@@ -4,8 +4,6 @@ go 1.12
 
 require (
 	github.com/Workiva/go-datastructures v1.0.50
-	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751 // indirect
-	github.com/alecthomas/units v0.0.0-20190924025748-f65c72e2690d // indirect
 	github.com/axgle/mahonia v0.0.0-20180208002826-3358181d7394
 	github.com/beevik/ntp v0.2.0
 	github.com/boltdb/bolt v1.3.1
@@ -24,7 +22,7 @@ require (
 	github.com/sirupsen/logrus v1.4.2
 	github.com/syndtr/goleveldb v1.0.0
 	github.com/vmihailenco/msgpack v4.0.4+incompatible
-	github.com/zvchain/zvchain v1.0.2
+	github.com/zvchain/zvchain v1.0.6
 	golang.org/x/crypto v0.0.0-20190513172903-22d7a77e9e5f
 	golang.org/x/net v0.0.0-20190620200207-3b0461eec859
 	golang.org/x/sys v0.0.0-20190523142557-0e01d883c5c5
