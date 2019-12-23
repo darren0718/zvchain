@@ -131,7 +131,7 @@ func (chain *FullBlockChain) saveBlockState(b *types.Block, state *account.Accou
 				if triedb.CanPersistent(persistentCount) {
 					bh := chain.queryBlockHeaderCeil(curCropMaxHeight + 1)
 					if bh != nil {
-						err = triedb.Commit(bh.StateTree, false)
+						err = triedb.Commit(bh.Height, bh.StateTree, false)
 						if err != nil {
 							return fmt.Errorf("trie commit error:%s", err.Error())
 						}
@@ -149,7 +149,7 @@ func (chain *FullBlockChain) saveBlockState(b *types.Block, state *account.Accou
 			}
 		}
 	} else {
-		err = triedb.Commit(root, false)
+		err = triedb.Commit(b.Header.Height, root, false)
 		if err != nil {
 			return fmt.Errorf("trie commit error:%s", err.Error())
 		}
