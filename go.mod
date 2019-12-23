@@ -3,12 +3,14 @@ module github.com/darren0718/zvchain
 go 1.12
 
 require (
+	github.com/VictoriaMetrics/fastcache v1.5.2
 	github.com/Workiva/go-datastructures v1.0.50
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751 // indirect
 	github.com/alecthomas/units v0.0.0-20190924025748-f65c72e2690d // indirect
 	github.com/axgle/mahonia v0.0.0-20180208002826-3358181d7394
 	github.com/beevik/ntp v0.2.0
 	github.com/boltdb/bolt v1.3.1
+	github.com/c9s/goprocinfo v0.0.0-20190309065803-0b2ad9ac246b // indirect
 	github.com/codeskyblue/go-sh v0.0.0-20190412065543-76bd3d59ff27
 	github.com/davecgh/go-spew v1.1.1
 	github.com/glacjay/goini v0.0.0-20161120062552-fd3024d87ee2

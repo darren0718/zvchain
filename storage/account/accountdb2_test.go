@@ -16,6 +16,7 @@
 package account
 
 import (
+	"fmt"
 	"math/big"
 	"testing"
 
@@ -26,7 +27,7 @@ import (
 func TestAccountDB_AddBalance(t *testing.T) {
 	db, _ := tasdb.NewMemDatabase()
 	defer db.Close()
-	triedb := NewDatabase(db)
+	triedb := NewDatabase(db, false)
 	state, _ := NewAccountDB(common.Hash{}, triedb)
 	state.SetBalance(common.BytesToAddress([]byte("1")), big.NewInt(1000000))
 	state.AddBalance(common.BytesToAddress([]byte("2")), big.NewInt(1))
@@ -47,7 +48,7 @@ func TestAccountDB_AddBalance(t *testing.T) {
 func TestAccountDB_SetData(t *testing.T) {
 	db, _ := tasdb.NewMemDatabase()
 	defer db.Close()
-	triedb := NewDatabase(db)
+	triedb := NewDatabase(db, false)
 	state, _ := NewAccountDB(common.Hash{}, triedb)
 	state.SetData(common.BytesToAddress([]byte("1")), []byte("aa"), []byte("v1"))
 	state.SetData(common.BytesToAddress([]byte("1")), []byte("bb"), []byte("v2"))
@@ -76,7 +77,7 @@ func TestAccountDB_SetData(t *testing.T) {
 func TestAccountDB_SetCode(t *testing.T) {
 	db, _ := tasdb.NewMemDatabase()
 	defer db.Close()
-	triedb := NewDatabase(db)
+	triedb := NewDatabase(db, false)
 	state, _ := NewAccountDB(common.Hash{}, triedb)
 	state.SetCode(common.BytesToAddress([]byte("2")), []byte("code"))
 	root, _ := state.Commit(false)
@@ -86,5 +87,38 @@ func TestAccountDB_SetCode(t *testing.T) {
 	sta := state.GetCode(common.BytesToAddress([]byte("2")))
 	if string(sta) != "code" {
 		t.Errorf("wrong value: %s,expect value code", sta)
+	}
+}
+
+func TestRef(t *testing.T) {
+	db, _ := tasdb.NewLDBDatabase("test", nil)
+	defer db.Close()
+	triedb := NewDatabase(db, false)
+	state, _ := NewAccountDB(common.Hash{}, triedb)
+
+	state.SetBalance(common.BytesToAddress([]byte("11")), new(big.Int).SetInt64(1))
+	state.SetBalance(common.BytesToAddress([]byte("12")), new(big.Int).SetInt64(2))
+
+	r, e := state.Commit(true)
+	if e != nil {
+		t.Fatalf("state commit err %v", e)
+	}
+	//e = triedb.TrieDB().Commit(r, false)
+	//if e != nil {
+	//	t.Fatalf("db commit err %v", e)
+	//}
+	fmt.Println("============1================")
+	state, _ = NewAccountDB(r, triedb)
+	state.SetBalance(common.BytesToAddress([]byte("12")), new(big.Int).SetInt64(3))
+	r, e = state.Commit(true)
+	if e != nil {
+		t.Fatalf("state commit err %v", e)
+	}
+
+	state, _ = NewAccountDB(r, triedb)
+	state.SetBalance(common.BytesToAddress([]byte("12")), new(big.Int).SetInt64(2))
+	_, e = state.Commit(true)
+	if e != nil {
+		t.Fatalf("state commit err %v", e)
 	}
 }

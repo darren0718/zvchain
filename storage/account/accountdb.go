@@ -16,12 +16,14 @@
 package account
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/darren0718/zvchain/log"
 	"github.com/darren0718/zvchain/storage/rlp"
 	"math/big"
 	"sort"
 	"sync"
+	"time"
 
 	"github.com/darren0718/zvchain/common"
 	"github.com/darren0718/zvchain/storage/trie"
@@ -561,4 +563,72 @@ func (adb *AccountDB) Commit(deleteEmptyObjects bool) (root common.Hash, err err
 		return nil
 	})
 	return root, err
+}
+
+type VerifyAccountIntegrityCallback func(stat *VerifyStat)
+
+type VerifyStat struct {
+	Addr      common.Address
+	Account   Account
+	DataCount uint64
+	DataSize  uint64
+	NodeSize  uint64
+	NodeCount uint64
+	KeySize   uint64
+	CodeSize  uint64
+	Cost      time.Duration
+}
+
+func (vs *VerifyStat) String() string {
+	s, _ := json.Marshal(vs)
+	return string(s)
+}
+
+func (adb *AccountDB) VerifyIntegrity(cb VerifyAccountIntegrityCallback, resolve trie.ResolveNodeCallback, checkHash bool) (bool, error) {
+	return adb.trie.VerifyIntegrity(func(key []byte, value []byte) error {
+		var account Account
+		if err := rlp.DecodeBytes(value, &account); err != nil {
+			return err
+		}
+		begin := time.Now()
+		vs := &VerifyStat{Account: account, Addr: common.BytesToAddress(key)}
+		// Verify the sub tree of the account
+		if account.Root != emptyData {
+			t, err := trie.NewTrie(account.Root, adb.db.TrieDB())
+			if err != nil {
+				return err
+			}
+			if ok, err := t.VerifyIntegrity(func(k []byte, v []byte) error {
+				vs.DataCount++
+				vs.DataSize += uint64(len(v))
+				vs.KeySize += uint64(len(k))
+				return nil
+			}, func(hash common.Hash, data []byte) {
+				if resolve != nil {
+					resolve(hash, data)
+				}
+				vs.NodeSize += uint64(len(data))
+				vs.NodeCount++
+			}, checkHash); !ok {
+				return err
+			}
+		}
+		codeHash := common.BytesToHash(account.CodeHash)
+		// Verify the contract code of the account
+		if codeHash != emptyCode {
+			code, err := adb.db.TrieDB().Node(codeHash)
+			if err != nil {
+				return fmt.Errorf("get code %v err %v", codeHash.Hex(), err)
+			}
+			vs.CodeSize = uint64(len(code))
+			if resolve != nil {
+				resolve(codeHash, code)
+			}
+		}
+		vs.Cost = time.Since(begin)
+		if cb != nil {
+			cb(vs)
+		}
+		return nil
+	}, resolve, checkHash)
 }

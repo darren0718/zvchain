@@ -53,22 +53,36 @@ func initExecutor() {
 	if err != nil {
 		panic(err)
 	}
+	common.InitConf("test1.ini")
 
 	statedb, err := ds.NewPrefixDatabase("state")
 	if err != nil {
 		panic(fmt.Sprintf("Init block chain error! Error:%s", err.Error()))
 	}
-	accountdb = account.NewDatabase(statedb)
+	accountdb = account.NewDatabase(statedb, false)
 	Logger = log.DefaultLogger
 
+	hp := NewConsensusHelper4Test(groupsig.ID{})
 	executor = &stateProcessor{
 		bc: &FullBlockChain{
-			consensusHelper: NewConsensusHelper4Test(groupsig.ID{}),
+			config: &BlockChainConfig{
+				block:       "bh",
+				blockHeight: "hi",
+				state:       "st",
+				reward:      "nu",
+				tx:          "tx",
+				receipt:     "rc",
+			},
+			consensusHelper: hp,
 			rewardManager:   NewRewardManager(),
 		},
 	}
 	if BlockChainImpl == nil {
 		BlockChainImpl = executor.bc.(*FullBlockChain)
+	}
+
+	if GroupManagerImpl == nil {
+		GroupManagerImpl = group.NewManager(BlockChainImpl, hp)
 	}
 
 	GroupManagerImpl.RegisterGroupCreateChecker(&GroupCreateChecker4Test{})
